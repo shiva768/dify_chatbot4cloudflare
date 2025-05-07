@@ -5,8 +5,12 @@
   "main": "worker.js",
   "scripts": {
     "dev": "wrangler dev",
+    "dev:local": "wrangler dev --local",
     "deploy": "wrangler deploy",
-    "test": "jest"
+    "deploy:prod": "wrangler deploy --env production",
+    "test": "jest",
+    "logs": "wrangler tail",
+    "kv:list": "wrangler kv:key list --binding=THREAD_MAP"
   },
   "dependencies": {
   },

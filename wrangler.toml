@@ -2,23 +2,42 @@ name = "slack-dify-bot"
 main = "worker.js"
 compatibility_date = "2024-01-01"
 
-# KVの設定
+# 基本設定（開発環境用）
+usage_model = "bundled"
+compatibility_flags = []
+
+# KVの設定（開発環境用）
 kv_namespaces = [
   { binding = "THREAD_MAP", id = "test", preview_id = "test" }
 ]
 
+# 共通の環境変数
 [vars]
 THREAD_LIFETIME_SEC = 86400  # 24時間
 
 # 開発環境用の環境変数
-[vars.dev]
+[env.dev]
+name = "slack-dify-bot-dev"
+# 開発環境用KV
+kv_namespaces = [
+  { binding = "THREAD_MAP", id = "test", preview_id = "test" }
+]
+# 開発環境の変数
+[env.dev.vars]
 DIFY_APP_ID = "your_dev_dify_app_id"
 DIFY_API_KEY = "your_dev_dify_api_key"
 SLACK_BOT_TOKEN = "your_dev_slack_bot_token"
 
-# 本番環境用の環境変数（実際のデプロイ時に使用）
-# これらは後でwrangler secretsコマンドで設定します
-# [vars.prod]
-# DIFY_APP_ID = "your_prod_dify_app_id"
-# DIFY_API_KEY = "your_prod_dify_api_key"
-# SLACK_BOT_TOKEN = "your_prod_slack_bot_token"
+# 本番環境用の設定
+[env.production]
+name = "slack-dify-bot"
+# 本番環境用KV
+kv_namespaces = [
+  { binding = "THREAD_MAP", id = "YOUR_PRODUCTION_KV_ID" }
+]
+# 本番環境の変数
+[env.production.vars]
+# シークレットは以下のコマンドで設定：
+# wrangler secret put DIFY_APP_ID --env production
+# wrangler secret put DIFY_API_KEY --env production
+# wrangler secret put SLACK_BOT_TOKEN --env production
