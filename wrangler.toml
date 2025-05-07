@@ -1,0 +1,24 @@
+name = "slack-dify-bot"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+# KVの設定
+kv_namespaces = [
+  { binding = "THREAD_MAP", id = "test", preview_id = "test" }
+]
+
+[vars]
+THREAD_LIFETIME_SEC = 86400  # 24時間
+
+# 開発環境用の環境変数
+[vars.dev]
+DIFY_APP_ID = "your_dev_dify_app_id"
+DIFY_API_KEY = "your_dev_dify_api_key"
+SLACK_BOT_TOKEN = "your_dev_slack_bot_token"
+
+# 本番環境用の環境変数（実際のデプロイ時に使用）
+# これらは後でwrangler secretsコマンドで設定します
+# [vars.prod]
+# DIFY_APP_ID = "your_prod_dify_app_id"
+# DIFY_API_KEY = "your_prod_dify_api_key"
+# SLACK_BOT_TOKEN = "your_prod_slack_bot_token"
