@@ -1,7 +1,7 @@
 const CONSTANTS = {
     THINKING_MESSAGE: "🤖 *考え中...（AIのやつが入力中）*",
     ERROR_MESSAGE: "⚠️ ごめんなさい、応答に失敗しました。",
-    RESPONSE_PREFIX: "💡 *AIのやつ*: ",
+    RESPONSE_PREFIX: "💡",
     DEFAULT_USER: "slack_user"
 };
 
@@ -10,7 +10,7 @@ class SlackClient {
     constructor(token) {
         this.token = token;
         this.headers = {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${this.token}`,
             "Content-Type": "application/json"
         };
     }
@@ -38,7 +38,7 @@ class DifyClient {
         this.apiKey = apiKey;
         this.appId = appId;
         this.headers = {
-            Authorization: `Bearer ${apiKey}`,
+            Authorization: `Bearer ${this.apiKey}`,
             "Content-Type": "application/json"
         };
     }
@@ -93,7 +93,7 @@ async function handleSlackEvent(body, env) {
     const messageData = extractMessageData(event, body);
     const conversationId = await env.THREAD_MAP.get(messageData.threadTs);
 
-    if (!shouldContinueProcessing(messageData, conversationId, body)) {
+    if (!shouldContinueProcessing(messageData, conversationId)) {
         return;
     }
 
@@ -116,6 +116,7 @@ async function handleSlackEvent(body, env) {
 }
 
 function shouldProcessEvent(event) {
+    // noinspection JSUnresolvedReference
     if (event.bot_id || ["bot_message", "message_changed"].includes(event.subtype)) {
         return false;
     }
@@ -133,7 +134,7 @@ function extractMessageData(event, body) {
     };
 }
 
-function shouldContinueProcessing(messageData, conversationId, body) {
+function shouldContinueProcessing(messageData, conversationId) {
     return messageData.isAppMention ||
         messageData.isDirectMessage ||
         conversationId;
