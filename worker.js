@@ -116,11 +116,12 @@ async function handleSlackEvent(body, env) {
 }
 
 function shouldProcessEvent(event) {
+    if (!event) return false;                           // 無効イベント
     // noinspection JSUnresolvedReference
-    if (event.bot_id || ["bot_message", "message_changed"].includes(event.subtype)) {
-        return false;
-    }
-    return event && (event.type === "app_mention" || event.type === "message");
+    if (event.bot_id) return false;                     // Bot 自身
+    if (["bot_message", "message_changed"].includes(event.subtype)) return false; // 編集通知など
+    // app_mention または通常メッセージだけ処理
+    return event.type === "app_mention" || event.type === "message";
 }
 
 function extractMessageData(event, body) {
