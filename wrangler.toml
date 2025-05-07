@@ -33,7 +33,7 @@ SLACK_BOT_TOKEN = "your_dev_slack_bot_token"
 name = "slack-dify-bot"
 # 本番環境用KV
 kv_namespaces = [
-  { binding = "THREAD_MAP", id = "YOUR_PRODUCTION_KV_ID" }
+  { binding = "THREAD_MAP", id = "e16c90e9179c489aa3296b09857b765b" }
 ]
 # 本番環境の変数
 [env.production.vars]
